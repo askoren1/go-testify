@@ -13,7 +13,7 @@ func TestMainHandlerWhenOkAssert(t *testing.T) {
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
-	assert.Equal(t, responseRecorder.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, responseRecorder.Code)
 	assert.NotEmpty(t, responseRecorder.Body)
 }
 
@@ -22,8 +22,8 @@ func TestMainHandlerWhenMissingCountAssert(t *testing.T) {
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
-	assert.Equal(t, responseRecorder.Code, http.StatusBadRequest)
-	assert.Equal(t, responseRecorder.Body.String(), `count missing`)
+	assert.Equal(t, http.StatusBadRequest, responseRecorder.Code)
+	assert.Equal(t, `wrong city value`, responseRecorder.Body.String())
 }
 
 func TestMainHandlerWhenCountMoreThanTotalAssert(t *testing.T) {
@@ -32,7 +32,7 @@ func TestMainHandlerWhenCountMoreThanTotalAssert(t *testing.T) {
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
-	assert.Equal(t, responseRecorder.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, responseRecorder.Code)
 	body := responseRecorder.Body.String()
 	list := strings.Split(body, ",")
 	assert.Len(t, list, totalCount)
